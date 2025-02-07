@@ -9,6 +9,7 @@ import { apiClientConfig } from '~/lib/api'
 import { client } from '~/oapi_client/client.gen'
 import appCss from '~/styles/app.css?url'
 import { seo } from '~/utils/seo'
+import { logPageView } from '~/utils/firebase'
 
 interface AppContext {
   queryClient: QueryClient
@@ -66,6 +67,11 @@ function RootComponent() {
       client.setConfig(config);    
     }
   }, [config]);
+
+  // Track initial page view
+  React.useEffect(() => {
+    logPageView();
+  }, []);
 
   return (
     <RootDocument>

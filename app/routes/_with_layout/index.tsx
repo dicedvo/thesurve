@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu"
 import { ReportFormDialog } from "~/components/ReportFormDialog"
+import { logPageView } from '~/utils/firebase'
 
 export const Route = createFileRoute('/_with_layout/')({
   async beforeLoad({ context: { queryClient } }) {
@@ -236,6 +237,13 @@ function Home() {
     debouncedSearch(searchValue)
     return () => debouncedSearch.cancel()
   }, [searchValue, debouncedSearch])
+
+  React.useEffect(() => {
+    logPageView({
+      page_title: 'Home',
+      search_term: search || undefined
+    });
+  }, [search]);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({

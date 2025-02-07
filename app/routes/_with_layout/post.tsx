@@ -18,6 +18,7 @@ import { Collapsible, CollapsibleContent } from "~/components/ui/collapsible"
 import { ChevronDownIcon } from "lucide-react"
 import { cn } from "~/lib/utils"
 import { seo } from '~/utils/seo'
+import { logPageView } from '~/utils/firebase'
 
 const formSchema = zItemsThesurvePostings.extend({
   survey_title: z.string().min(1, "Title is required"),
@@ -281,6 +282,12 @@ function PostForm() {
     }),
     enabled: courseInput.length > 2
   })
+
+  useEffect(() => {
+    logPageView({
+      page_title: 'Post Survey'
+    });
+  }, []);
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">

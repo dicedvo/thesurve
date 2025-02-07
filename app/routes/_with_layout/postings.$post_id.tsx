@@ -3,13 +3,14 @@ import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import { isAxiosError } from 'axios'
 import DOMPurify from 'dompurify'
 import { marked } from 'marked'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { PostFormDialog } from '~/components/PostFormDialog'
 import { readItemsThesurvePostingsOptions, readSingleItemsThesurvePostingsOptions } from '~/oapi_client/@tanstack/react-query.gen'
 import type { ItemsThesurvePostings } from '~/oapi_client/types.gen'
 import { formatTime } from '~/utils/format'
 import { seo } from '~/utils/seo'
 import { ReportFormDialog } from "~/components/ReportFormDialog"
+import { logPageView } from '~/utils/firebase'
 
 marked.setOptions({
   gfm: true,
@@ -184,6 +185,15 @@ function RouteComponent() {
       console.error('Failed to copy URL:', err)
     }
   }
+
+  React.useEffect(() => {
+    logPageView({
+      page_title: `Survey: ${posting.survey_title}`,
+      course: posting.course,
+      school: posting.school,
+      posting_id: posting.id
+    });
+  }, [posting]);
 
   const shareLinks = {
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(locationHref)}`,
