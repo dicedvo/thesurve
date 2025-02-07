@@ -63,7 +63,7 @@ function RootComponent() {
 
   React.useEffect(() => {
     if (config) {
-      client.setConfig(apiClientConfig);    
+      client.setConfig(config);    
     }
   }, [config]);
 
