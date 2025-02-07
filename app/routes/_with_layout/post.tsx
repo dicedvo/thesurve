@@ -17,6 +17,7 @@ import { zItemsThesurvePostings } from "~/oapi_client/zod.gen"
 import { Collapsible, CollapsibleContent } from "~/components/ui/collapsible"
 import { ChevronDownIcon } from "lucide-react"
 import { cn } from "~/lib/utils"
+import { seo } from '~/utils/seo'
 
 const formSchema = zItemsThesurvePostings.extend({
   survey_title: z.string().min(1, "Title is required"),
@@ -31,6 +32,14 @@ const formSchema = zItemsThesurvePostings.extend({
 
 export const Route = createFileRoute('/_with_layout/post')({
   component: PostForm,
+  head: () => ({
+    meta: seo({
+      title: 'Share Your Survey | TheSurve',
+      description: 'Share your academic research survey with student participants. Connect with research participants and gather valuable data for your study.',
+      keywords: 'post survey, share survey, student research, academic research',
+      ogType: 'website'
+    })
+  }),
 })
 
 function SurveyGuideCollapsible({ open, onOpenChange }: {

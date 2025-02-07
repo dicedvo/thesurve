@@ -48,7 +48,9 @@ export const Route = createFileRoute('/_with_layout/postings/$post_id')({
       meta: seo({
         title: `${posting.survey_title} | TheSurve`,
         description: posting.description || 'Participate in this student research survey. TheSurve connects student researchers with participants.',
-        keywords: `${posting.course}, ${posting.school || ''}, student research, survey, academic research`
+        keywords: `${posting.course}, ${posting.school || ''}, student research, survey, academic research`,
+        author: posting.submitter || undefined,
+        ogType: 'article'
       })
     }
   },
