@@ -219,7 +219,7 @@ function RouteComponent() {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
         {/* Add All Surveys link */}
         <div className="mb-4">
           <Link
@@ -244,9 +244,9 @@ function RouteComponent() {
         </div>
 
         <div className="bg-white rounded-lg shadow-sm">
-          <div className="p-6 sm:p-8 border-b">
-            <div className="flex items-start justify-between gap-6">
-              <div className="flex-1 min-w-0">
+          <div className="p-4 sm:p-6 md:p-8 border-b">
+            <div className="flex flex-col sm:flex-row items-start justify-between gap-4 sm:gap-6">
+              <div className="flex-1 min-w-0 w-full">
                 <div className="space-y-1 mb-2">
                   <div className="inline-block bg-blue-100 text-blue-800 px-2 py-0.5 rounded-md font-medium text-sm max-w-full truncate">
                     <span className="inline-block max-w-full truncate align-bottom">
@@ -260,13 +260,13 @@ function RouteComponent() {
                   )}
                 </div>
                 
-                <h1 className="text-2xl font-bold text-gray-900 mb-4">
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
                   {posting.survey_title}
                 </h1>
 
                 <div className="flex flex-col gap-2 text-sm text-gray-600">
                   {posting.submitter && (
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                       <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                       </svg>
@@ -278,7 +278,7 @@ function RouteComponent() {
                       )}
                     </div>
                   )}
-                  <div className="flex items-center gap-6">
+                  <div className="flex flex-wrap items-center gap-4 sm:gap-6">
                     <div className="flex items-center gap-2">
                       <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -296,12 +296,12 @@ function RouteComponent() {
               </div>
 
               {posting.survey_link && (
-                <div className="text-center">
+                <div className="text-center w-full sm:w-auto">
                   <a
                     href={posting.survey_link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-shrink-0 inline-flex items-center px-5 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                    className="w-full sm:w-auto flex-shrink-0 inline-flex items-center justify-center px-4 sm:px-5 py-2.5 sm:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
                   >
                     Participate Now
                     <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -322,7 +322,7 @@ function RouteComponent() {
             </div>
           </div>
 
-          <div className="p-6 sm:p-8">
+          <div className="p-4 sm:p-6 md:p-8">
             <div 
               className="prose prose-gray prose-sm sm:prose-base max-w-none
                 prose-headings:text-gray-900 prose-headings:font-semibold
@@ -340,20 +340,20 @@ function RouteComponent() {
             </div>
 
             {posting.survey_link && (
-              <div className="mt-8 sm:mt-10 max-w-xl mx-auto">
-                <div className="bg-blue-50 rounded-xl p-6">
+              <div className="mt-6 sm:mt-8 max-w-xl mx-auto">
+                <div className="bg-blue-50 rounded-xl p-4 sm:p-6">
                   <h3 className="text-base font-semibold text-blue-900 mb-2">
                     Ready to Participate?
                   </h3>
                   <p className="text-sm text-blue-700 mb-4">
                     Your feedback will help improve support for others. The survey takes {formatTime(posting.estimated_time!, 'long')} to complete.
                   </p>
-                  <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                     <a
                       href={posting.survey_link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium gap-2"
+                      className="flex-1 flex items-center justify-center px-4 sm:px-6 py-2.5 sm:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium gap-2 text-sm sm:text-base"
                     >
                       Participate Now
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -394,19 +394,19 @@ function RouteComponent() {
               </div>
             )}
 
-            <div className="mt-12 border-t pt-8">
-              <h2 className="text-lg font-semibold text-gray-900 mb-6">
+            <div className="mt-8 sm:mt-12 border-t pt-6 sm:pt-8">
+              <h2 className="text-lg font-semibold text-gray-900 mb-4 sm:mb-6">
                 Related Surveys
               </h2>
 
               {isLoading ? (
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                   <RelatedSurveyCardSkeleton />
                   <RelatedSurveyCardSkeleton />
                   <RelatedSurveyCardSkeleton />
                 </div>
               ) : (relatedSurveys?.data ?? []).length > 0 ? (
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                   {(relatedSurveys?.data ?? []).map((survey) => (
                     <RelatedSurveyCard key={survey.id} posting={survey} />
                   ))}
@@ -423,17 +423,17 @@ function RouteComponent() {
       <div className="sticky bottom-0 z-10">
         <div className="relative bg-gradient-to-br from-blue-900 to-blue-800 text-white">
           <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20 text-white bg-repeat [background-size:40px]"></div>
-          <div className="relative max-w-4xl mx-auto px-6 py-4">
-            <div className="flex flex-col sm:flex-row items-center gap-6">
-              <div className="flex-1">
-                <h2 className="text-xl font-bold mb-2">Connect with Participants</h2>
-                <p className="text-blue-100 text-sm">
+          <div className="relative max-w-4xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+              <div className="flex-1 text-center sm:text-left">
+                <h2 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">Connect with Participants</h2>
+                <p className="text-blue-100 text-xs sm:text-sm">
                   Get valuable responses for your research study. 
                   TheSurve helps student researchers find participants easily.
                 </p>
               </div>
-              <div className="flex-shrink-0">
-                <PostFormDialog variant="secondary" />
+              <div className="flex-shrink-0 w-full sm:w-auto">
+                <PostFormDialog variant="secondary" className="w-full sm:w-auto" />
               </div>
             </div>
           </div>
