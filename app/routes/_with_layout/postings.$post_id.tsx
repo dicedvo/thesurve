@@ -25,9 +25,13 @@ export const Route = createFileRoute('/_with_layout/postings/$post_id')({
           },
         }),
       });
+
+      if (!posting) {
+        throw notFound();
+      }
   
       return {
-        posting: posting!
+        posting
       }
     } catch (e) {
       if (isAxiosError(e) && e.response?.status === 404) {
