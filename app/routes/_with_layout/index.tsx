@@ -298,7 +298,7 @@ function Home() {
           <div className="flex flex-col sm:flex-row items-center gap-8">
             <div className="flex-1 text-center sm:text-left">
               <h1 className="text-3xl md:text-[2.2rem] font-bold mb-4 md:leading-10">
-                Every Student <span className="italic">Deserves</span><br className="hidden md:block" />Quality Research Data
+                Every Student <span className="italic">Deserves</span><span className="md:hidden">&nbsp;</span><br className="hidden md:block" />Quality Research Data
               </h1>
               <p className="text-blue-100">
                 Share and participate in academic surveys to help fellow students gather 
