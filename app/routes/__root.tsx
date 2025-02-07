@@ -1,7 +1,6 @@
 import { QueryClient } from '@tanstack/react-query'
 import { Outlet, createRootRouteWithContext, Link } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/router-devtools'
-import { Meta, Scripts } from '@tanstack/start'
+import { createServerFn, Meta, Scripts } from '@tanstack/start'
 import * as React from 'react'
 import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
 import { NotFound } from '~/components/NotFound'
@@ -15,7 +14,20 @@ interface AppContext {
   queryClient: QueryClient
 }
 
+const $getSessionConfig = createServerFn()
+  .handler(() => apiClientConfig as { baseURL: string, headers: { Authorization: string } });
+
 export const Route = createRootRouteWithContext<AppContext>()({
+  beforeLoad: ({ context: { queryClient } }) =>
+    queryClient.ensureQueryData({
+      queryKey: ["__root"],
+      queryFn: async () => {
+        const config = await $getSessionConfig();
+        return {
+          config,
+        };
+      },
+    }),
   head: () => ({
     meta: [
       {
@@ -47,9 +59,13 @@ export const Route = createRootRouteWithContext<AppContext>()({
 })
 
 function RootComponent() {
+  const { config } = Route.useRouteContext();
+
   React.useEffect(() => {
-    client.setConfig(apiClientConfig);    
-  }, []);
+    if (config) {
+      client.setConfig(apiClientConfig);    
+    }
+  }, [config]);
 
   return (
     <RootDocument>
