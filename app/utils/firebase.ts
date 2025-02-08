@@ -4,13 +4,16 @@ import { Analytics, CustomParams, getAnalytics, logEvent, setUserProperties } fr
 let app: FirebaseApp | null = null;
 let analytics: Analytics | null = null;
 
-if (!import.meta.env.SSR) {
-  app = initializeApp({
-    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-    appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  })
+export const firebaseConfig = {
+  apiKey: import.meta.env.SSR ? process.env.VITE_FIREBASE_API_KEY : import.meta.env.VITE_FIREBASE_API_KEY,
+  projectId: import.meta.env.SSR ? process.env.VITE_FIREBASE_PROJECT_ID : import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  appId: import.meta.env.SSR ? process.env.VITE_FIREBASE_APP_ID : import.meta.env.VITE_FIREBASE_APP_ID,
+}
 
+export function initializeFirebase(config: typeof firebaseConfig) {
+  if (app && analytics) return;
+
+  app = initializeApp(config);
   analytics = getAnalytics(app);
 }
 

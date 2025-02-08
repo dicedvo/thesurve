@@ -1,5 +1,5 @@
 import { QueryClient } from '@tanstack/react-query'
-import { Outlet, createRootRouteWithContext, Link } from '@tanstack/react-router'
+import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
 import { createServerFn, Meta, Scripts } from '@tanstack/start'
 import * as React from 'react'
 import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
@@ -8,15 +8,21 @@ import { Toaster } from '~/components/ui/toaster'
 import { apiClientConfig } from '~/lib/api'
 import { client } from '~/oapi_client/client.gen'
 import appCss from '~/styles/app.css?url'
+import { firebaseConfig, initializeFirebase } from '~/utils/firebase'
 import { seo } from '~/utils/seo'
-import { logPageView } from '~/utils/firebase'
 
 interface AppContext {
   queryClient: QueryClient
 }
 
 const $getSessionConfig = createServerFn()
-  .handler(() => apiClientConfig as { baseURL: string, headers: { Authorization: string } });
+  .handler(() => ({ 
+    apiClientConfig, 
+    firebaseConfig
+  }) as { 
+    apiClientConfig: { baseURL: string, headers: { Authorization: string } },
+    firebaseConfig: { apiKey: string, projectId: string, appId: string }
+  });
 
 export const Route = createRootRouteWithContext<AppContext>()({
   beforeLoad: ({ context: { queryClient } }) =>
@@ -64,14 +70,10 @@ function RootComponent() {
 
   React.useEffect(() => {
     if (config) {
-      client.setConfig(config);    
+      client.setConfig(config.apiClientConfig);
+      initializeFirebase(config.firebaseConfig);
     }
   }, [config]);
-
-  // Track initial page view
-  React.useEffect(() => {
-    logPageView();
-  }, []);
 
   return (
     <RootDocument>
