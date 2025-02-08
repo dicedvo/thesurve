@@ -1,6 +1,10 @@
 # TheSurve
 
-TheSurve is a platform that connects student researchers with willing participants, making it easier to gather quality data for academic research projects.
+TheSurve is a community-driven platform developed by [DICE (Davao Interschool Computer Enthusiasts)](https://dicedvo.org) that connects student researchers with willing participants. Our mission is to democratize academic research by making it easier for students to gather quality data for their research projects.
+
+## About DICE
+
+DICE is an organization that promotes technology education and collaboration among different student tech communities in Davao City, Philippines. Through projects like TheSurve, we aim to solve real problems faced by students while fostering a culture of innovation and community-driven development.
 
 ## Features
 
