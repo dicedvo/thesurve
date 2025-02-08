@@ -55,7 +55,13 @@ The app will be available at `http://localhost:3000`.
 
 ### Environment Variables
 
-Create a `.env` file in the root directory with the following variables:
+Copy the example environment file to create your own:
+
+```bash
+cp .env.example .env
+```
+
+Then edit `.env` with your actual configuration values:
 
 ```env
 API_URL=your_api_url
@@ -63,6 +69,8 @@ FIREBASE_API_KEY=your_firebase_api_key
 FIREBASE_PROJECT_ID=your_firebase_project_id
 FIREBASE_APP_ID=your_firebase_app_id
 ```
+
+Never commit the `.env` file to version control. The `.env.example` file serves as a template and documentation for required environment variables.
 
 ### Building for Production
 
