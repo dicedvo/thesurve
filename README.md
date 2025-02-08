@@ -1,72 +1,107 @@
-# Welcome to TanStack.com!
+# TheSurve
 
-This site is built with TanStack Router!
+TheSurve is a platform that connects student researchers with willing participants, making it easier to gather quality data for academic research projects.
 
-- [TanStack Router Docs](https://tanstack.com/router)
+## Features
 
-It's deployed automagically with Netlify!
+- 🔍 Share and discover academic research surveys
+- 📊 Track survey responses and engagement
+- 🎓 Connect with students across different institutions
+- ⚡ Fast, modern UI built with React and TanStack Router
 
-- [Netlify](https://netlify.com/)
+## Tech Stack
 
-## Development
+- **Framework:** [TanStack Start](https://tanstack.com/start)
+- **Router:** [TanStack Router](https://tanstack.com/router)
+- **Backend:** [Directus](https://directus.io)
+- **UI Components:** [shadcn/ui](https://ui.shadcn.com)
+- **Styling:** Tailwind CSS
+- **API Client:** OpenAPI with TanStack Query
+- **Runtime:** Bun
 
-From your terminal:
+## Getting Started
 
-```sh
-pnpm install
-pnpm dev
+### Prerequisites
+
+- Bun (>= 1.2.1)
+- Node.js (>= 18)
+
+### Development
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/thesurve.git
+cd thesurve
 ```
 
-This starts your app in development mode, rebuilding assets on file changes.
+2. Install dependencies:
 
-## Editing and previewing the docs of TanStack projects locally
-
-The documentations for all TanStack projects except for `React Charts` are hosted on [https://tanstack.com](https://tanstack.com), powered by this TanStack Router app.
-In production, the markdown doc pages are fetched from the GitHub repos of the projects, but in development they are read from the local file system.
-
-Follow these steps if you want to edit the doc pages of a project (in these steps we'll assume it's [`TanStack/form`](https://github.com/tanstack/form)) and preview them locally :
-
-1. Create a new directory called `tanstack`.
-
-```sh
-mkdir tanstack
+```bash
+bun install
 ```
 
-2. Enter the directory and clone this repo and the repo of the project there.
+3. Start the development server:
 
-```sh
-cd tanstack
-git clone git@github.com:TanStack/tanstack.com.git
-git clone git@github.com:TanStack/form.git
+```bash
+bun run dev
 ```
 
-> [!NOTE]
-> Your `tanstack` directory should look like this:
->
-> ```
-> tanstack/
->    |
->    +-- form/
->    |
->    +-- tanstack.com/
-> ```
+The app will be available at `http://localhost:3000`.
 
-> [!WARNING]
-> Make sure the name of the directory in your local file system matches the name of the project's repo. For example, `tanstack/form` must be cloned into `form` (this is the default) instead of `some-other-name`, because that way, the doc pages won't be found.
+### Environment Variables
 
-3. Enter the `tanstack/tanstack.com` directory, install the dependencies and run the app in dev mode:
+Create a `.env` file in the root directory with the following variables:
 
-```sh
-cd tanstack.com
-pnpm i
-# The app will run on https://localhost:3000 by default
-pnpm dev
+```env
+API_URL=your_api_url
+FIREBASE_API_KEY=your_firebase_api_key
+FIREBASE_PROJECT_ID=your_firebase_project_id
+FIREBASE_APP_ID=your_firebase_app_id
 ```
 
-4. Now you can visit http://localhost:3000/form/latest/docs/overview in the browser and see the changes you make in `tanstack/form/docs`.
+### Building for Production
 
-> [!NOTE]
-> The updated pages need to be manually reloaded in the browser.
+```bash
+bun run build
+```
 
-> [!WARNING]
-> You will need to update the `docs/config.json` file (in the project's repo) if you add a new doc page!
+### Docker
+
+Build and run the application using Docker:
+
+```bash
+docker build -t thesurve .
+docker run -p 3000:3000 thesurve
+```
+
+## Project Structure
+
+```
+├── app/
+│   ├── components/     # Reusable UI components
+│   ├── hooks/         # Custom React hooks
+│   ├── lib/          # Utilities and configurations
+│   ├── routes/       # Application routes
+│   └── styles/       # Global styles and Tailwind config
+├── public/           # Static assets
+└── tests/           # Test files
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Deployment
+
+The application is automatically deployed using GitHub Actions. When pushing to the `master` branch, a new Docker image is built and published to GitHub Container Registry.
+
+See the workflow configuration in `.github/workflows/docker-publish.yml` for details.
