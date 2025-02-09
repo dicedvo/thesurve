@@ -21,10 +21,11 @@ import { seo } from '~/utils/seo'
 import { logPageView } from '~/utils/firebase'
 
 const formSchema = zItemsThesurvePostings.extend({
+  id: z.undefined(),
   survey_title: z.string().min(1, "Title is required"),
   course: z.string().min(1, "Course is required"),
   school: z.string().min(1, "School is required"),
-  description: z.string().min(50, "Please provide a detailed description (minimum 50 characters)"),
+  description: z.string().min(30, "Please provide a detailed description (minimum 30 characters)"),
   survey_link: z.string().url("Must be a valid URL"),
   submitter_email: z.string().email("Must be a valid email"),
   estimated_time: z.string().min(1, "Please select estimated completion time").default("0:05:00"),
@@ -198,11 +199,15 @@ function AutocompleteInput({
               ))}
             </ul>
           ) : (
-            <div className="p-2 text-sm text-gray-500">
+            <div className="p-2 text-sm">
               {!hasTyped ? (
-                "Start typing to search..."
+                <span className="text-gray-500">Start typing to search...</span>
               ) : (
-                "No matches found"
+                <div className="flex items-center space-x-1.5 px-1">
+                  <span className="text-gray-600 shrink-0">Add</span>
+                  <span className="font-medium text-blue-600 truncate">{value}</span>
+                  <span className="text-gray-600 shrink-0">as new entry</span>
+                </div>
               )}
             </div>
           )}
@@ -244,6 +249,9 @@ function PostForm() {
       submitter_email: "",
       estimated_time: "0:05:00",
       submitter: "",
+      date_created: undefined,
+      date_updated: undefined,
+      id: undefined
     },
     disabled: mutation.isPending
   })
@@ -291,16 +299,18 @@ function PostForm() {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
-      <Form {...form}>
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-3">Share Your Survey</h1>
-          <p className="text-gray-600">
-            Connect with participants by sharing clear details about your study.
-            The more information you provide, the better response you'll receive.
-          </p>
-        </div>
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-3">Share Your Survey</h1>
+        <p className="text-gray-600">
+          Connect with participants by sharing clear details about your study.
+          The more information you provide, the better response you'll receive.
+        </p>
+      </div>
 
-        <form onSubmit={form.handleSubmit((values) => mutation.mutate({ body: values as ItemsThesurvePostings }))} className="space-y-6">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(
+          (values) => mutation.mutate({ body: values as unknown as ItemsThesurvePostings }),
+        )} className="space-y-6">
           {/* Survey URL Card */}
           <div className="bg-white rounded-lg border shadow-sm">
             <FormField
