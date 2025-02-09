@@ -35,7 +35,7 @@ export const Route = createFileRoute('/_with_layout/postings/$post_id')({
         posting
       }
     } catch (e) {
-      if (isAxiosError(e) && e.response?.status === 404) {
+      if (isAxiosError(e) && (e.response?.status === 404 || e.response?.status === 403)) {
         throw notFound();
       }
       throw e;
@@ -56,8 +56,31 @@ export const Route = createFileRoute('/_with_layout/postings/$post_id')({
     }
   },
   notFoundComponent: NotFoundComponent,
+  pendingComponent: PendingComponenet,
   component: RouteComponent,
 })
+
+function PendingComponenet() {
+  return (
+    <div className="min-h-screen bg-gray-50 px-4 py-16 sm:px-6 sm:py-24 md:grid md:place-items-center lg:px-8">
+      <div className="max-w-max mx-auto">
+        <main className="sm:flex">
+          <p className="text-4xl font-bold text-blue-600 sm:text-5xl">Loading...</p>
+          <div className="sm:ml-6">
+            <div className="sm:border-l sm:border-gray-200 sm:pl-6">
+              <h1 className="text-4xl font-bold text-gray-900 tracking-tight sm:text-5xl">
+                Survey is loading
+              </h1>
+              <p className="mt-3 text-base text-gray-500">
+                Please wait while we load the survey details.
+              </p>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  )
+}
 
 function NotFoundComponent() {
   return (
