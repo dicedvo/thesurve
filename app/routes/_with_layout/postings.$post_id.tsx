@@ -379,12 +379,12 @@ function RouteComponent() {
             </div>
 
             {posting.survey_link && (
-              <div className="mt-6 sm:mt-8 max-w-xl mx-auto">
+              <div className="mt-6 sm:mt-8">
                 <div className="bg-blue-50 rounded-xl p-4 sm:p-6">
                   <h3 className="text-base font-semibold text-blue-900 mb-2">
                     Ready to Participate?
                   </h3>
-                  <p className="text-sm text-blue-700 mb-4">
+                  <p className="text-sm text-gray-600 mb-4">
                     Your feedback will help improve support for others. The survey takes {formatTime(posting.estimated_time!, 'long')} to complete.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -428,7 +428,7 @@ function RouteComponent() {
                       )}
                     </div>
                   </div>
-                  <div className="text-xs text-center text-blue-700 mt-2">Opens in a new window</div>
+                  <div className="text-xs text-blue-700 mt-2 text-left">Opens in a new window</div>
                 </div>
               </div>
             )}
