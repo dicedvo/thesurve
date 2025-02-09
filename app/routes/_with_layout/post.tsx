@@ -232,7 +232,7 @@ function PostForm() {
       navigate({ to: '/' })
       toast({
         title: "Survey Published! ✅",
-        description: "Your survey has been successfully published and is now visible to other students. You'll receive an email notification once your survey is reviewed.",
+        description: "Your survey has been successfully published and is now visible to other students.",
         duration: 6000,
       })
     }
