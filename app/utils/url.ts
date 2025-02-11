@@ -1,4 +1,4 @@
-const isSSR = () => import.meta.env.SSR || typeof window === 'undefined';
+export const isSSR = () => import.meta.env.SSR || typeof window === 'undefined';
 
 export function buildUrl(path?: string, baseUrl?: string): string {
   // If no path provided and we're in browser, return current URL

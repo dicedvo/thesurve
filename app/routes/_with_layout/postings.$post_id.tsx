@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import { isAxiosError } from 'axios'
-import DOMPurify from 'dompurify'
+import DOMPurify from 'isomorphic-dompurify'
 import { marked } from 'marked'
 import React, { useState } from 'react'
 import { PostFormDialog } from '~/components/PostFormDialog'
@@ -126,9 +126,9 @@ function NotFoundComponent() {
   )
 }
 
-function formatDescriptionAsMarkdown(description: string | undefined | null) {  
-  // Convert to HTML using marked and sanitize with DOMPurify
-  const html = marked(description ?? '', { async: false })
+function formatDescriptionAsMarkdown(description: string | undefined | null) {
+  if (!description) return ''
+  const html = marked(description, { async: false })
   return DOMPurify.sanitize(html, {
     ALLOWED_TAGS: ['p', 'a', 'ul', 'ol', 'li', 'strong', 'em', 'blockquote', 'code', 'pre'],
     ALLOWED_ATTR: ['href', 'target', 'rel'],
@@ -197,7 +197,8 @@ function EmptyRelatedState() {
 function RouteComponent() {
   const { posting } = Route.useLoaderData()
   const [showCopiedMessage, setShowCopiedMessage] = useState(false)
-  const locationHref = buildUrl()
+  const match = Route.useMatch()
+  const locationHref = buildUrl(match.pathname)
 
   const handleCopyLink = async () => {
     try {
@@ -223,8 +224,6 @@ function RouteComponent() {
     twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(locationHref)}&text=${encodeURIComponent(posting.survey_title!)}`,
     linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(locationHref)}`,
   }
-
-  const formattedDescription = formatDescriptionAsMarkdown(posting.description)
 
   // Query for related surveys
   const { data: relatedSurveys, isLoading } = useQuery({
@@ -375,7 +374,7 @@ function RouteComponent() {
                 prose-code:text-gray-800 prose-code:bg-gray-100 prose-code:px-1 prose-code:rounded
                 prose-pre:bg-gray-800 prose-pre:text-gray-100"
             >
-              <div dangerouslySetInnerHTML={{ __html: formattedDescription }} />
+              <div dangerouslySetInnerHTML={{ __html: formatDescriptionAsMarkdown(posting.description) }} />
             </div>
 
             {posting.survey_link && (
