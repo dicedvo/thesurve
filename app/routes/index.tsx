@@ -13,18 +13,19 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu"
-import { ReportFormDialog } from "~/components/ReportFormDialog"
+} from '~/components/ui/dropdown-menu'
+import { ReportFormDialog } from '~/components/ReportFormDialog'
 import { logPageView } from '~/utils/firebase'
+import { Logo } from '~/components/Logo'
 
-export const Route = createFileRoute('/_with_layout/')({
+export const Route = createFileRoute('/')({
   async beforeLoad({ context: { queryClient } }) {
     return {
       data: await queryClient.ensureInfiniteQueryData({
         ...readItemsThesurvePostingsInfiniteOptions({
           query: {
             sort: ['-date_created'],
-          } 
+          },
         }),
       }),
     }
@@ -79,9 +80,12 @@ function NoResultsState({ searchTerm }: { searchTerm: string }) {
           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
         />
       </svg>
-      <h3 className="mt-4 text-lg font-medium text-gray-900">No results found</h3>
+      <h3 className="mt-4 text-lg font-medium text-gray-900">
+        No results found
+      </h3>
       <p className="mt-2 text-sm text-gray-600 max-w-sm mx-auto">
-        We couldn't find any surveys matching "{searchTerm}". Try adjusting your search terms.
+        We couldn't find any surveys matching "{searchTerm}". Try adjusting your
+        search terms.
       </p>
     </div>
   )
@@ -101,9 +105,7 @@ function PostingCard({ posting }: { posting: ItemsThesurvePostings }) {
               {posting.course ?? 'Uncategorized'}
             </span>
             {(posting.school ?? '').length > 0 && (
-              <span className="text-xs text-gray-400">
-                {posting.school}
-              </span>
+              <span className="text-xs text-gray-400">{posting.school}</span>
             )}
           </div>
           <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors mb-2">
@@ -164,7 +166,10 @@ function PostingCard({ posting }: { posting: ItemsThesurvePostings }) {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <ReportFormDialog posting={posting}>
-                  <DropdownMenuItem className="text-red-600" onSelect={(e) => e.preventDefault()}>
+                  <DropdownMenuItem
+                    className="text-red-600"
+                    onSelect={(e) => e.preventDefault()}
+                  >
                     Report this Survey
                   </DropdownMenuItem>
                 </ReportFormDialog>
@@ -177,12 +182,28 @@ function PostingCard({ posting }: { posting: ItemsThesurvePostings }) {
   )
 }
 
-function SearchBar({ value, onChange }: { value: string; onChange: (value: string) => void }) {
+function SearchBar({
+  value,
+  onChange,
+}: {
+  value: string
+  onChange: (value: string) => void
+}) {
   return (
     <div className="relative">
       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-        <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        <svg
+          className="h-5 w-5 text-gray-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          />
         </svg>
       </div>
       <input
@@ -225,12 +246,13 @@ function Home() {
   const navigate = Route.useNavigate()
   const [searchValue, setSearchValue] = React.useState(search || '')
   const loadMoreRef = React.useRef<HTMLDivElement>(null)
-  
+
   const debouncedSearch = React.useMemo(
-    () => _.debounce((value: string) => {
-      navigate({ search: { search: value || undefined } })
-    }, 300),
-    []
+    () =>
+      _.debounce((value: string) => {
+        navigate({ search: { search: value || undefined } })
+      }, 300),
+    [],
   )
 
   React.useEffect(() => {
@@ -241,9 +263,9 @@ function Home() {
   React.useEffect(() => {
     logPageView({
       page_title: 'Home',
-      search_term: search || undefined
-    });
-  }, [search]);
+      search_term: search || undefined,
+    })
+  }, [search])
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
@@ -258,7 +280,8 @@ function Home() {
           !lastPage.meta?.total_count ||
           typeof lastPageParam === 'number' ||
           !lastPageParam.query?.limit ||
-          (lastPageParam.query.offset ?? 0) + lastPageParam.query.limit >= lastPage.meta.total_count
+          (lastPageParam.query.offset ?? 0) + lastPageParam.query.limit >=
+            lastPage.meta.total_count
         ) {
           return undefined
         }
@@ -266,11 +289,12 @@ function Home() {
           ...lastPageParam,
           query: {
             ...lastPageParam.query,
-            offset: (lastPageParam.query.offset ?? 0) + lastPageParam.query.limit,
+            offset:
+              (lastPageParam.query.offset ?? 0) + lastPageParam.query.limit,
           },
         }
       },
-      enabled: searchValue.length === 0 || searchValue.length > 2
+      enabled: searchValue.length === 0 || searchValue.length > 2,
     })
 
   React.useEffect(() => {
@@ -281,7 +305,7 @@ function Home() {
           fetchNextPage()
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     )
 
     const currentRef = loadMoreRef.current
@@ -305,12 +329,16 @@ function Home() {
         <div className="relative max-w-3xl mx-auto px-4 py-10">
           <div className="flex flex-col sm:flex-row items-center gap-8">
             <div className="flex-1 text-center sm:text-left">
+              <Logo className="mb-6 mx-auto sm:mx-0 [&_img]:h-8" />
               <h1 className="text-3xl md:text-[2.2rem] font-bold mb-4 md:leading-10">
-                Every Student <span className="italic">Deserves</span><span className="md:hidden">&nbsp;</span><br className="hidden md:block" />Quality Research Data
+                Every Student <span className="italic">Deserves</span>
+                <span className="md:hidden">&nbsp;</span>
+                <br className="hidden md:block" />
+                Quality Research Data
               </h1>
               <p className="text-blue-100">
-                Share and participate in academic surveys to help fellow students gather 
-                meaningful data for their research projects.
+                Share and participate in academic surveys to help fellow
+                students gather meaningful data for their research projects.
               </p>
             </div>
             <div className="flex-shrink-0">

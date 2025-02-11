@@ -12,7 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as WithlayoutImport } from './routes/_with_layout'
-import { Route as WithlayoutIndexImport } from './routes/_with_layout/index'
+import { Route as IndexImport } from './routes/index'
 import { Route as WithlayoutPostImport } from './routes/_with_layout/post'
 import { Route as WithlayoutPostingsPostidImport } from './routes/_with_layout/postings.$post_id'
 
@@ -23,10 +23,10 @@ const WithlayoutRoute = WithlayoutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const WithlayoutIndexRoute = WithlayoutIndexImport.update({
+const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => WithlayoutRoute,
+  getParentRoute: () => rootRoute,
 } as any)
 
 const WithlayoutPostRoute = WithlayoutPostImport.update({
@@ -45,6 +45,13 @@ const WithlayoutPostingsPostidRoute = WithlayoutPostingsPostidImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
     '/_with_layout': {
       id: '/_with_layout'
       path: ''
@@ -57,13 +64,6 @@ declare module '@tanstack/react-router' {
       path: '/post'
       fullPath: '/post'
       preLoaderRoute: typeof WithlayoutPostImport
-      parentRoute: typeof WithlayoutImport
-    }
-    '/_with_layout/': {
-      id: '/_with_layout/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof WithlayoutIndexImport
       parentRoute: typeof WithlayoutImport
     }
     '/_with_layout/postings/$post_id': {
@@ -80,13 +80,11 @@ declare module '@tanstack/react-router' {
 
 interface WithlayoutRouteChildren {
   WithlayoutPostRoute: typeof WithlayoutPostRoute
-  WithlayoutIndexRoute: typeof WithlayoutIndexRoute
   WithlayoutPostingsPostidRoute: typeof WithlayoutPostingsPostidRoute
 }
 
 const WithlayoutRouteChildren: WithlayoutRouteChildren = {
   WithlayoutPostRoute: WithlayoutPostRoute,
-  WithlayoutIndexRoute: WithlayoutIndexRoute,
   WithlayoutPostingsPostidRoute: WithlayoutPostingsPostidRoute,
 }
 
@@ -95,45 +93,48 @@ const WithlayoutRouteWithChildren = WithlayoutRoute._addFileChildren(
 )
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '': typeof WithlayoutRouteWithChildren
   '/post': typeof WithlayoutPostRoute
-  '/': typeof WithlayoutIndexRoute
   '/postings/$post_id': typeof WithlayoutPostingsPostidRoute
 }
 
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '': typeof WithlayoutRouteWithChildren
   '/post': typeof WithlayoutPostRoute
-  '/': typeof WithlayoutIndexRoute
   '/postings/$post_id': typeof WithlayoutPostingsPostidRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
+  '/': typeof IndexRoute
   '/_with_layout': typeof WithlayoutRouteWithChildren
   '/_with_layout/post': typeof WithlayoutPostRoute
-  '/_with_layout/': typeof WithlayoutIndexRoute
   '/_with_layout/postings/$post_id': typeof WithlayoutPostingsPostidRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/post' | '/' | '/postings/$post_id'
+  fullPaths: '/' | '' | '/post' | '/postings/$post_id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/post' | '/' | '/postings/$post_id'
+  to: '/' | '' | '/post' | '/postings/$post_id'
   id:
     | '__root__'
+    | '/'
     | '/_with_layout'
     | '/_with_layout/post'
-    | '/_with_layout/'
     | '/_with_layout/postings/$post_id'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   WithlayoutRoute: typeof WithlayoutRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   WithlayoutRoute: WithlayoutRouteWithChildren,
 }
 
@@ -147,23 +148,22 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
+        "/",
         "/_with_layout"
       ]
+    },
+    "/": {
+      "filePath": "index.tsx"
     },
     "/_with_layout": {
       "filePath": "_with_layout.tsx",
       "children": [
         "/_with_layout/post",
-        "/_with_layout/",
         "/_with_layout/postings/$post_id"
       ]
     },
     "/_with_layout/post": {
       "filePath": "_with_layout/post.tsx",
-      "parent": "/_with_layout"
-    },
-    "/_with_layout/": {
-      "filePath": "_with_layout/index.tsx",
       "parent": "/_with_layout"
     },
     "/_with_layout/postings/$post_id": {

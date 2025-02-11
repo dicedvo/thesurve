@@ -3,6 +3,7 @@ import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
 import { createServerFn, Meta, Scripts } from '@tanstack/start'
 import * as React from 'react'
 import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
+import { Footer } from '~/components/Footer'
 import { NotFound } from '~/components/NotFound'
 import { Toaster } from '~/components/ui/toaster'
 import { apiClientConfig } from '~/lib/api'
@@ -10,6 +11,7 @@ import { client } from '~/oapi_client/client.gen'
 import appCss from '~/styles/app.css?url'
 import { firebaseConfig, initializeFirebase } from '~/utils/firebase'
 import { seo } from '~/utils/seo'
+import { buildUrl } from '~/utils/url'
 
 interface AppContext {
   queryClient: QueryClient
@@ -47,6 +49,7 @@ export const Route = createRootRouteWithContext<AppContext>()({
       ...seo({
         title: 'TheSurve | Every Student Deserves Quality Research Data',
         description: 'TheSurve connects student researchers with willing participants. Share your survey, collect quality data, and help fellow students succeed in their research journey.',
+        image: buildUrl('/og.png'),
       }),
     ],
     links: [
@@ -91,7 +94,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
-        {/* <TanStackRouterDevtools position="bottom-right" /> */}
+        <Footer />
         <Scripts />
       </body>
     </html>

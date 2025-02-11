@@ -11,6 +11,7 @@ import { formatTime } from '~/utils/format'
 import { seo } from '~/utils/seo'
 import { ReportFormDialog } from "~/components/ReportFormDialog"
 import { logPageView } from '~/utils/firebase'
+import { buildUrl } from '~/utils/url'
 
 marked.setOptions({
   gfm: true,
@@ -196,8 +197,7 @@ function EmptyRelatedState() {
 function RouteComponent() {
   const { posting } = Route.useLoaderData()
   const [showCopiedMessage, setShowCopiedMessage] = useState(false)
-
-  const locationHref = typeof window !== 'undefined' ? window.location.href : ''
+  const locationHref = buildUrl()
 
   const handleCopyLink = async () => {
     try {
