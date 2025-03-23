@@ -7,9 +7,9 @@ import { routerWithQueryClient } from '@tanstack/react-router-with-query';
 import { client } from './oapi_client/client.gen';
 import { apiClientConfig } from './lib/api';
 
-client.setConfig(apiClientConfig);
-
 export function createRouter() {
+  client.setConfig(apiClientConfig);
+
   const queryClient = new QueryClient();
   const router = createTanStackRouter({
     routeTree,

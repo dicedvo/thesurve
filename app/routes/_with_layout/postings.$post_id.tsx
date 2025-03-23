@@ -3,7 +3,7 @@ import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import { isAxiosError } from 'axios'
 import DOMPurify from 'isomorphic-dompurify'
 import { marked } from 'marked'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { PostFormDialog } from '~/components/PostFormDialog'
 import { readItemsThesurvePostingsOptions, readSingleItemsThesurvePostingsOptions } from '~/oapi_client/@tanstack/react-query.gen'
 import type { ItemsThesurvePostings } from '~/oapi_client/types.gen'
@@ -12,6 +12,8 @@ import { seo } from '~/utils/seo'
 import { ReportFormDialog } from "~/components/ReportFormDialog"
 import { logPageView } from '~/utils/firebase'
 import { buildUrl } from '~/utils/url'
+import { client } from '~/oapi_client/client.gen'
+import { createQuerySerializer } from '~/utils/api'
 
 marked.setOptions({
   gfm: true,
@@ -226,8 +228,9 @@ function RouteComponent() {
   }
 
   // Query for related surveys
-  const { data: relatedSurveys, isLoading } = useQuery({
+  const { data: relatedSurveys, error, isFetching: isLoading } = useQuery({
     ...readItemsThesurvePostingsOptions({
+      querySerializer: createQuerySerializer(),
       query: {
         limit: 3,
         fields: ['id', 'course', 'school', 'survey_title', 'description'],
@@ -254,6 +257,11 @@ function RouteComponent() {
       },
     }),
   })
+
+  useEffect(() => {
+    console.log('Related surveys:', relatedSurveys)
+    console.log('Error:', error)
+  }, [relatedSurveys, error])
 
   return (
     <div className="bg-gray-50 min-h-screen">
