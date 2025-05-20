@@ -273,6 +273,7 @@ function Home() {
         query: {
           limit: 10,
           search: search ?? undefined,
+          sort: ['-date_created'],
         },
       }),
       getNextPageParam: (lastPage, _, lastPageParam) => {
