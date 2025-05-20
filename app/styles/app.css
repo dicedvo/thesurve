@@ -66,4 +66,19 @@
   .using-mouse * {
     outline: none !important;
   }
+
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fadeInDown {
+    animation: fadeInDown 0.3s ease-out;
+  }
 }

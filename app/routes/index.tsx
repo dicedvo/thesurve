@@ -17,6 +17,7 @@ import {
 import { ReportFormDialog } from '~/components/ReportFormDialog'
 import { logPageView } from '~/utils/firebase'
 import { Logo } from '~/components/Logo'
+import { CommonHeader } from '~/components/CommonHeader'
 
 export const Route = createFileRoute('/')({
   async beforeLoad({ context: { queryClient } }) {
@@ -246,6 +247,8 @@ function Home() {
   const navigate = Route.useNavigate()
   const [searchValue, setSearchValue] = React.useState(search || '')
   const loadMoreRef = React.useRef<HTMLDivElement>(null)
+  const [showFloatingNav, setShowFloatingNav] = React.useState(false)
+  const heroRef = React.useRef<HTMLDivElement>(null)
 
   const debouncedSearch = React.useMemo(
     () =>
@@ -321,15 +324,46 @@ function Home() {
     }
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
+  React.useEffect(() => {
+    const currentHeroRef = heroRef.current
+    if (!currentHeroRef) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setShowFloatingNav(!entry.isIntersecting && window.scrollY > 0)
+      },
+      { threshold: 0 }, // Trigger as soon as the element is out of view
+    )
+
+    observer.observe(currentHeroRef)
+
+    return () => {
+      if (currentHeroRef) {
+        observer.unobserve(currentHeroRef)
+      }
+    }
+  }, [])
+
   const postings = data?.pages.flatMap((page) => page.data || []) || []
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   return (
     <div className="bg-gray-50">
-      <div className="relative bg-gradient-to-br from-blue-900 to-blue-800 text-white overflow-hidden">
+      {showFloatingNav && (
+        <CommonHeader
+          headerClassName="fixed top-0 left-0 right-0 z-50 bg-blue-900 text-white backdrop-blur-md shadow-md animate-fadeInDown"
+          logoClassName="[&_img]:h-6"
+          onBackToTop={scrollToTop}
+        />
+      )}
+      <div ref={heroRef} className="relative bg-gradient-to-br from-blue-900 to-blue-800 text-white overflow-hidden">
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20 text-white bg-repeat [background-size:40px]"></div>
         <div className="relative max-w-3xl mx-auto px-4 py-10">
           <div className="flex flex-col sm:flex-row items-center gap-8">
-            <div className="flex-1 text-center sm:text-left">
+            <div className="flex-1 text-center sm:text-left flex flex-col sm:self-left self-center">
               <Logo className="mb-6 mx-auto sm:mx-0 [&_img]:h-8" />
               <h1 className="text-3xl md:text-[2.2rem] font-bold mb-4 md:leading-10">
                 Every Student <span className="italic">Deserves</span>
