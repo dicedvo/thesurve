@@ -17,6 +17,8 @@ export const seo = ({
     { title },
     { name: 'description', content: description },
     { name: 'keywords', content: keywords },
+    { name: 'robots', content: 'index, follow' },
+    { name: 'theme-color', content: '#1e3a8a' },
     { name: 'twitter:title', content: title },
     { name: 'twitter:description', content: description },
     { name: 'og:type', content: ogType },

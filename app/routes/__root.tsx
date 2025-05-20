@@ -53,6 +53,7 @@ export const Route = createRootRouteWithContext<AppContext>()({
       }),
     ],
     links: [
+      { rel: 'manifest', href: buildUrl('/site.webmanifest') },
       { rel: 'stylesheet', href: appCss },
       { rel: 'icon', href: '/favicon.ico' },
     ],

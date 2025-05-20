@@ -39,7 +39,7 @@ export const Route = createFileRoute('/_with_layout/post')({
       title: 'Share Your Survey | TheSurve',
       description: 'Share your academic research survey with student participants. Connect with research participants and gather valuable data for your study.',
       keywords: 'post survey, share survey, student research, academic research',
-      ogType: 'website'
+      ogType: 'website',
     })
   }),
 })
